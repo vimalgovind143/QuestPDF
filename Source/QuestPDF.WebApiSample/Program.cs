@@ -10,7 +10,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure QuestPDF License
-QuestPDF.Settings.License = LicenseType.Community;
+QuestPDF.Settings.License = LicenseType.Professional;
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())

@@ -177,4 +177,166 @@ public class PdfController : ControllerBase
     }
 
     #endregion
+
+    #region Dynamic Column Report
+
+    /// <summary>
+    /// Generates a Dynamic Column Report with sample data
+    /// </summary>
+    [HttpGet("dynamic-column-report/sample")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GenerateDynamicColumnReportSample()
+    {
+        var model = SampleDataGenerator.GetSampleDynamicColumnReport();
+        var document = new DynamicColumnReportDocument(model);
+        
+        var pdfBytes = document.GeneratePdf();
+        
+        return File(pdfBytes, "application/pdf", "dynamic-column-report-sample.pdf");
+    }
+
+    /// <summary>
+    /// Generates a custom Dynamic Column Report from request body
+    /// </summary>
+    [HttpPost("dynamic-column-report")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult GenerateDynamicColumnReport([FromBody] DynamicColumnReportModel model)
+    {
+        if (model == null)
+            return BadRequest("Dynamic column report model is required");
+
+        try
+        {
+            var document = new DynamicColumnReportDocument(model);
+            var pdfBytes = document.GeneratePdf();
+            
+            return File(pdfBytes, "application/pdf", "dynamic-column-report.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating dynamic column report PDF");
+            return StatusCode(500, $"Error generating PDF: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Gets sample dynamic column report data as JSON
+    /// </summary>
+    [HttpGet("dynamic-column-report/sample/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<DynamicColumnReportModel> GetSampleDynamicColumnReportJson()
+    {
+        return Ok(SampleDataGenerator.GetSampleDynamicColumnReport());
+    }
+
+    #endregion
+
+    #region Product Catalog (A4 Landscape)
+
+    /// <summary>
+    /// Generates a Product Catalog in A4 Landscape format with sample data
+    /// </summary>
+    [HttpGet("product-catalog/sample")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GenerateProductCatalogSample()
+    {
+        var model = SampleDataGenerator.GetSampleProductCatalog();
+        var document = new ProductCatalogDocument(model);
+        
+        var pdfBytes = document.GeneratePdf();
+        
+        return File(pdfBytes, "application/pdf", "product-catalog-sample.pdf");
+    }
+
+    /// <summary>
+    /// Generates a custom Product Catalog from request body
+    /// </summary>
+    [HttpPost("product-catalog")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult GenerateProductCatalog([FromBody] ProductCatalogModel model)
+    {
+        if (model == null)
+            return BadRequest("Product catalog model is required");
+
+        try
+        {
+            var document = new ProductCatalogDocument(model);
+            var pdfBytes = document.GeneratePdf();
+            
+            return File(pdfBytes, "application/pdf", "product-catalog.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating product catalog PDF");
+            return StatusCode(500, $"Error generating PDF: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Gets sample product catalog data as JSON
+    /// </summary>
+    [HttpGet("product-catalog/sample/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<ProductCatalogModel> GetSampleProductCatalogJson()
+    {
+        return Ok(SampleDataGenerator.GetSampleProductCatalog());
+    }
+
+    #endregion
+
+    #region Employee Report (A4 Portrait)
+
+    /// <summary>
+    /// Generates an Employee Report in A4 Portrait format with sample data
+    /// </summary>
+    [HttpGet("employee-report/sample")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GenerateEmployeeReportSample()
+    {
+        var model = SampleDataGenerator.GetSampleEmployeeReport();
+        var document = new EmployeeReportDocument(model);
+        
+        var pdfBytes = document.GeneratePdf();
+        
+        return File(pdfBytes, "application/pdf", "employee-report-sample.pdf");
+    }
+
+    /// <summary>
+    /// Generates a custom Employee Report from request body
+    /// </summary>
+    [HttpPost("employee-report")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult GenerateEmployeeReport([FromBody] EmployeeReportModel model)
+    {
+        if (model == null)
+            return BadRequest("Employee report model is required");
+
+        try
+        {
+            var document = new EmployeeReportDocument(model);
+            var pdfBytes = document.GeneratePdf();
+            
+            return File(pdfBytes, "application/pdf", "employee-report.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating employee report PDF");
+            return StatusCode(500, $"Error generating PDF: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Gets sample employee report data as JSON
+    /// </summary>
+    [HttpGet("employee-report/sample/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<EmployeeReportModel> GetSampleEmployeeReportJson()
+    {
+        return Ok(SampleDataGenerator.GetSampleEmployeeReport());
+    }
+
+    #endregion
 }

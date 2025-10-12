@@ -7,8 +7,11 @@ A real-time PDF generation web API built with **ASP.NET Core 8** and **QuestPDF*
 ✅ **Real-time PDF Generation** - Generate PDFs dynamically via HTTP requests  
 ✅ **RESTful API** - Easy-to-use endpoints for PDF creation  
 ✅ **Swagger UI** - Interactive API documentation and testing  
-✅ **Multiple Document Types** - Invoice generation with customizable templates  
+✅ **Multiple Document Types** - Various business document templates  
 ✅ **Sample Data** - Pre-built examples to get started quickly  
+✅ **Dynamic Layouts** - Reports with variable columns determined at runtime  
+✅ **Multiple Orientations** - Both A4 Portrait and Landscape formats  
+✅ **Branding Support** - Add company logos, seals, and watermarks to all documents  
 
 ## Getting Started
 
@@ -36,130 +39,176 @@ A real-time PDF generation web API built with **ASP.NET Core 8** and **QuestPDF*
 
 ## API Endpoints
 
-### 1. Hello World PDF
-Simple demonstration PDF with basic content.
+All endpoints support both GET (with sample data) and POST (with custom data) methods, plus JSON data retrieval for testing.
 
-**GET** `/api/pdf/hello`
+### 1. Standard TAX Invoice
+
+Professional tax invoice with VAT calculations, multi-page support, and Arabic text.
+
+**GET** `/api/pdf/tax-invoice/sample` - Generate sample TAX invoice  
+**POST** `/api/pdf/tax-invoice` - Generate custom TAX invoice  
+**GET** `/api/pdf/tax-invoice/sample/json` - Get sample data as JSON
 
 **Example:**
 ```bash
-curl http://localhost:5100/api/pdf/hello --output hello.pdf
-```
-
-Or simply open in your browser:
-```
-http://localhost:5100/api/pdf/hello
+curl http://localhost:5100/api/pdf/tax-invoice/sample --output tax-invoice.pdf
 ```
 
 ---
 
-### 2. Sample Invoice PDF
-Generate a pre-built invoice with sample data.
+### 2. Receipt Document
 
-**GET** `/api/pdf/invoice/sample`
+Compact A5 receipt for payment confirmations.
+
+**GET** `/api/pdf/receipt/sample` - Generate sample receipt  
+**POST** `/api/pdf/receipt` - Generate custom receipt  
+**GET** `/api/pdf/receipt/sample/json` - Get sample data as JSON
 
 **Example:**
 ```bash
-curl http://localhost:5100/api/pdf/invoice/sample --output invoice.pdf
-```
-
-Or open in browser:
-```
-http://localhost:5100/api/pdf/invoice/sample
+curl http://localhost:5100/api/pdf/receipt/sample --output receipt.pdf
 ```
 
 ---
 
-### 3. Custom Invoice PDF
-Generate an invoice with your own data.
+### 3. Purchase Order
 
-**POST** `/api/pdf/invoice`
+Comprehensive purchase order with delivery details and approval signatures.
 
-**Content-Type:** `application/json`
+**GET** `/api/pdf/purchase-order/sample` - Generate sample purchase order  
+**POST** `/api/pdf/purchase-order` - Generate custom purchase order  
+**GET** `/api/pdf/purchase-order/sample/json` - Get sample data as JSON
 
-**Example Request Body:**
-```json
-{
-  "invoiceNumber": 1001,
-  "issueDate": "2025-10-09T00:00:00",
-  "dueDate": "2025-11-09T00:00:00",
-  "sellerAddress": {
-    "companyName": "Your Company",
-    "street": "123 Main St",
-    "city": "New York",
-    "state": "NY 10001",
-    "email": "contact@yourcompany.com",
-    "phone": "+1 555-0123"
-  },
-  "customerAddress": {
-    "companyName": "Customer Inc",
-    "street": "456 Oak Ave",
-    "city": "Boston",
-    "state": "MA 02101",
-    "email": "billing@customer.com",
-    "phone": "+1 555-9876"
-  },
-  "items": [
-    {
-      "name": "Professional Services",
-      "price": 1500.00,
-      "quantity": 1
-    },
-    {
-      "name": "Consulting Hours",
-      "price": 150.00,
-      "quantity": 5
-    }
-  ],
-  "comments": "Thank you for your business!"
-}
-```
-
-**Example using curl:**
+**Example:**
 ```bash
-curl -X POST http://localhost:5100/api/pdf/invoice \
-  -H "Content-Type: application/json" \
-  -d @invoice-data.json \
-  --output custom-invoice.pdf
-```
-
-**Example using PowerShell:**
-```powershell
-Invoke-RestMethod -Uri "http://localhost:5100/api/pdf/invoice" `
-  -Method Post `
-  -ContentType "application/json" `
-  -InFile "invoice-data.json" `
-  -OutFile "custom-invoice.pdf"
+curl http://localhost:5100/api/pdf/purchase-order/sample --output purchase-order.pdf
 ```
 
 ---
 
-### 4. Get Sample Invoice JSON
-Retrieve the sample invoice data as JSON (useful for testing).
+### 4. Dynamic Column Report
 
-**GET** `/api/pdf/invoice/sample/json`
+Flexible report with variable columns determined at runtime - perfect for sales reports, analytics, or any data with changing column structures.
+
+**GET** `/api/pdf/dynamic-column-report/sample` - Generate sample report  
+**POST** `/api/pdf/dynamic-column-report` - Generate custom report  
+**GET** `/api/pdf/dynamic-column-report/sample/json` - Get sample data as JSON
 
 **Example:**
 ```bash
-curl http://localhost:5100/api/pdf/invoice/sample/json
+curl http://localhost:5100/api/pdf/dynamic-column-report/sample --output dynamic-report.pdf
 ```
+
+**Key Features:**
+- Variable number of columns
+- Highlighted rows for emphasis
+- Summary row support
+- Ideal for quarterly reports, regional analysis
+
+---
+
+### 5. Product Catalog (A4 Landscape)
+
+Wide-format product catalog showcasing multiple categories and products - demonstrates A4 landscape orientation.
+
+**GET** `/api/pdf/product-catalog/sample` - Generate sample catalog  
+**POST** `/api/pdf/product-catalog` - Generate custom catalog  
+**GET** `/api/pdf/product-catalog/sample/json` - Get sample data as JSON
+
+**Example:**
+```bash
+curl http://localhost:5100/api/pdf/product-catalog/sample --output product-catalog.pdf
+```
+
+**Key Features:**
+- A4 Landscape format for wider content
+- Multiple product categories
+- Discount pricing with strikethrough
+- Color-coded availability status
+- Terms and conditions on separate page
+
+---
+
+### 6. Employee Report (A4 Portrait)
+
+Professional employee directory and performance report - demonstrates A4 portrait layout with structured data.
+
+**GET** `/api/pdf/employee-report/sample` - Generate sample report  
+**POST** `/api/pdf/employee-report` - Generate custom report  
+**GET** `/api/pdf/employee-report/sample/json` - Get sample data as JSON
+
+**Example:**
+```bash
+curl http://localhost:5100/api/pdf/employee-report/sample --output employee-report.pdf
+```
+
+**Key Features:**
+- A4 Portrait format
+- Summary statistics cards
+- Performance ratings with color coding
+- Attendance tracking
+- Signature sections
 
 ## Project Structure
 
 ```
 QuestPDF.WebApiSample/
 ├── Controllers/
-│   └── PdfController.cs          # API endpoints
+│   └── PdfController.cs                      # API endpoints for all documents
 ├── Documents/
-│   └── InvoiceDocument.cs        # PDF document template
+│   ├── StandardTaxInvoiceDocument.cs         # TAX invoice template
+│   ├── ReceiptDocument.cs                    # Receipt template (A5)
+│   ├── PurchaseOrderDocument.cs              # Purchase order template
+│   ├── DynamicColumnReportDocument.cs        # Dynamic column report (A4)
+│   ├── ProductCatalogDocument.cs             # Product catalog (A4 Landscape)
+│   └── EmployeeReportDocument.cs             # Employee report (A4 Portrait)
 ├── Models/
-│   └── InvoiceModel.cs           # Data models
-├── Properties/
-│   └── launchSettings.json       # Launch configuration
-├── Program.cs                    # Application entry point
-├── appsettings.json              # Configuration
-└── README.md                     # This file
+│   ├── StandardTaxInvoiceModel.cs            # TAX invoice data model
+│   ├── ReceiptModel.cs                       # Receipt data model
+│   ├── PurchaseOrderModel.cs                 # Purchase order data model
+│   ├── DynamicColumnReportModel.cs           # Dynamic report data model
+│   ├── ProductCatalogModel.cs                # Product catalog data model
+│   └── EmployeeReportModel.cs                # Employee report data model
+├── SampleDataGenerator.cs                    # Sample data for all document types
+├── Program.cs                                # Application entry point
+├── appsettings.json                          # Configuration
+└── README.md                                 # This file
 ```
+
+## Document Type Overview
+
+| Document | Format | Orientation | Use Case |
+|----------|--------|-------------|----------|
+| **TAX Invoice** | A4 | Portrait | Professional invoices with VAT |
+| **Receipt** | A5 | Portrait | Payment confirmations |
+| **Purchase Order** | A4 | Portrait | Procurement documents |
+| **Dynamic Column Report** | A4 | Portrait | Analytics & sales reports |
+| **Product Catalog** | A4 | **Landscape** | Product listings & catalogs |
+| **Employee Report** | A4 | Portrait | HR reports & directories |
+
+## Adding Your Company Branding
+
+All documents support company branding through images. To add your logos and watermarks:
+
+1. **Create an `Images` folder** in the project root (if not already present)
+2. **Add your image files** with these exact names:
+   - `company-logo.png` - Main header logo (120x60px recommended)
+   - `company-logo-footer.png` - Footer logo (40x30px, optional)
+   - `company-seal.png` - Official seal/stamp (80x80px)
+   - `watermark.png` - Background watermark (400x400px, semi-transparent)
+
+3. **Restart the application** if it's running
+
+See `Images/README.md` for detailed guidelines and specifications.
+
+### Branding Features
+
+- **Header Logo:** Appears in top-right corner of all documents
+- **Footer Logo:** Small logo in document footers with company info
+- **Watermark:** Semi-transparent background image on all pages (15% opacity)
+- **Company Seal:** Official stamp in signature sections (Tax Invoice, Receipt, Purchase Order)
+
+The system works with or without images - placeholders appear if images are missing.
 
 ## Customization
 
@@ -193,13 +242,25 @@ public IActionResult GenerateCustomPdf()
 }
 ```
 
-### Modifying the Invoice Template
+### Modifying Existing Templates
 
-Edit `Documents/InvoiceDocument.cs` to customize:
+Each document template in the `Documents/` folder can be customized:
 - Layout and styling
 - Colors and fonts
-- Table structure
+- Table structure and columns
 - Header and footer content
+- Page size and orientation
+
+**Example - Changing to Landscape:**
+```csharp
+// In any Document class Compose method
+page.Size(PageSizes.A4.Landscape());  // Instead of Portrait()
+```
+
+**Example - Custom Page Size:**
+```csharp
+page.Size(new PageSize(800, 600));  // Custom width x height in points
+```
 
 ## Technologies Used
 

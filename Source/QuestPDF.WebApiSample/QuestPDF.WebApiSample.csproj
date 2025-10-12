@@ -15,4 +15,10 @@
         <ProjectReference Include="..\QuestPDF\QuestPDF.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Update="Images\*.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
 </Project>

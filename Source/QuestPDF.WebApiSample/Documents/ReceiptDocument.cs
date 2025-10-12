@@ -29,7 +29,19 @@ public class ReceiptDocument : IDocument
             page.Header().Element(ComposeHeader);
             page.Content().Element(ComposeContent);
             page.Footer().Element(ComposeFooter);
+            
+            // Add watermark
+            page.Foreground().Element(ComposeWatermark);
         });
+    }
+
+    void ComposeWatermark(IContainer container)
+    {
+        var watermark = ImageHelper.GetWatermark();
+        if (watermark != null && watermark.Length > 0)
+        {
+            container.AlignCenter().AlignMiddle().Width(250).Image(watermark);
+        }
     }
 
     void ComposeHeader(IContainer container)
@@ -52,6 +64,16 @@ public class ReceiptDocument : IDocument
                     col.Item().Text($"{Model.Company.City}, {Model.Company.Country}").FontSize(9);
                     col.Item().Text($"Phone: {Model.Company.Phone}").FontSize(9);
                     col.Item().Text($"Email: {Model.Company.Email}").FontSize(9);
+                });
+
+                // Logo in header
+                row.ConstantItem(70).Column(logoCol =>
+                {
+                    var logo = ImageHelper.GetCompanyLogo();
+                    if (logo != null && logo.Length > 0)
+                    {
+                        logoCol.Item().Height(50).Image(logo, ImageScaling.FitArea);
+                    }
                 });
 
                 row.ConstantItem(150).Column(col =>
@@ -190,8 +212,16 @@ public class ReceiptDocument : IDocument
 
                 row.RelativeItem().Column(col =>
                 {
-                    col.Item().BorderTop(1).BorderColor(Colors.Black).PaddingTop(5)
-                        .Text("Signature").FontSize(9).SemiBold();
+                    var seal = ImageHelper.GetCompanySeal();
+                    if (seal != null && seal.Length > 0)
+                    {
+                        col.Item().Width(60).Height(60).Image(seal, ImageScaling.FitArea);
+                    }
+                    else
+                    {
+                        col.Item().BorderTop(1).BorderColor(Colors.Black).PaddingTop(5)
+                            .Text("Signature").FontSize(9).SemiBold();
+                    }
                 });
             });
         });
@@ -199,8 +229,25 @@ public class ReceiptDocument : IDocument
 
     void ComposeFooter(IContainer container)
     {
-        container.BorderTop(1).BorderColor(Colors.Grey.Lighten1).PaddingTop(5)
-            .AlignCenter().Text("Thank you for your payment!")
-            .FontSize(10).Italic().FontColor(Colors.Green.Darken1);
+        container.Column(column =>
+        {
+            column.Item().Row(row =>
+            {
+                var footerLogo = ImageHelper.GetFooterLogo();
+                if (footerLogo != null && footerLogo.Length > 0)
+                {
+                    row.ConstantItem(30).Height(25).Image(footerLogo, ImageScaling.FitArea);
+                    row.ConstantItem(8);
+                }
+                
+                row.RelativeItem().Text(Model.Company.CompanyName)
+                    .FontSize(8)
+                    .FontColor(Colors.Grey.Darken1);
+            });
+            
+            column.Item().BorderTop(1).BorderColor(Colors.Grey.Lighten1).PaddingTop(5)
+                .AlignCenter().Text("Thank you for your payment!")
+                .FontSize(10).Italic().FontColor(Colors.Green.Darken1);
+        });
     }
 }

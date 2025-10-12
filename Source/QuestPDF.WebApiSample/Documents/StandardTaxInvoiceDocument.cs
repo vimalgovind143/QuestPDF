@@ -31,7 +31,19 @@ public class StandardTaxInvoiceDocument : IDocument
                 page.Header().Element(ComposeHeader);
                 page.Content().Element(ComposeContent);
                 page.Footer().Element(ComposeFooter);
+                
+                // Add watermark layer
+                page.Foreground().Element(ComposeWatermark);
             });
+    }
+
+    void ComposeWatermark(IContainer container)
+    {
+        var watermark = ImageHelper.GetWatermark();
+        if (watermark != null && watermark.Length > 0)
+        {
+            container.AlignCenter().AlignMiddle().Width(400).Image(watermark);
+        }
     }
 
     void ComposeHeader(IContainer container)
@@ -65,11 +77,20 @@ public class StandardTaxInvoiceDocument : IDocument
 
                 row.ConstantItem(120).AlignRight().Column(col =>
                 {
-                    col.Item().Height(60).Background(Colors.Blue.Lighten4)
-                        .AlignCenter().AlignMiddle()
-                        .Text("LOGO")
-                        .FontSize(14)
-                        .FontColor(Colors.Blue.Darken1);
+                    var logo = ImageHelper.GetCompanyLogo();
+                    if (logo != null && logo.Length > 0)
+                    {
+                        col.Item().Height(60).Image(logo, ImageScaling.FitArea);
+                    }
+                    else
+                    {
+                        // Placeholder if no logo exists
+                        col.Item().Height(60).Background(Colors.Blue.Lighten4)
+                            .AlignCenter().AlignMiddle()
+                            .Text("LOGO")
+                            .FontSize(14)
+                            .FontColor(Colors.Blue.Darken1);
+                    }
                 });
             });
 
@@ -425,31 +446,67 @@ public class StandardTaxInvoiceDocument : IDocument
 
             row.RelativeItem().Column(col =>
             {
-                col.Item().BorderTop(1).BorderColor(Colors.Grey.Darken1).PaddingTop(5)
-                    .Text("Company Stamp")
-                    .FontSize(8)
-                    .SemiBold();
+                var seal = ImageHelper.GetCompanySeal();
+                if (seal != null && seal.Length > 0)
+                {
+                    col.Item().Width(80).Height(80).Image(seal, ImageScaling.FitArea);
+                }
+                else
+                {
+                    col.Item().BorderTop(1).BorderColor(Colors.Grey.Darken1).PaddingTop(5)
+                        .Text("Company Stamp")
+                        .FontSize(8)
+                        .SemiBold();
+                }
             });
         });
     }
 
     void ComposeFooter(IContainer container)
     {
-        container.BorderTop(1).BorderColor(Colors.Grey.Lighten1).PaddingTop(5).Row(row =>
+        container.Column(column =>
         {
-            row.RelativeItem().DefaultTextStyle(x => x.FontSize(7).FontColor(Colors.Grey.Darken1)).Text(text =>
+            column.Spacing(5);
+            
+            // Footer with logo and company info
+            column.Item().Row(row =>
             {
-                text.Span("This is a computer-generated invoice and does not require a signature. | ")
-                    .Italic();
-                text.Span("For queries, contact: " + Model.Seller.Email);
+                // Footer logo
+                var footerLogo = ImageHelper.GetFooterLogo();
+                if (footerLogo != null && footerLogo.Length > 0)
+                {
+                    row.ConstantItem(40).Height(30).Image(footerLogo, ImageScaling.FitArea);
+                    row.ConstantItem(10); // Spacing
+                }
+                
+                row.RelativeItem().Column(col =>
+                {
+                    col.Item().Text(Model.Seller.CompanyName)
+                        .FontSize(8)
+                        .SemiBold()
+                        .FontColor(Colors.Blue.Darken2);
+                    col.Item().Text($"{Model.Seller.Address}, {Model.Seller.City}, {Model.Seller.Country}")
+                        .FontSize(7)
+                        .FontColor(Colors.Grey.Darken1);
+                });
             });
-
-            row.AutoItem().AlignRight().DefaultTextStyle(x => x.FontSize(8)).Text(text =>
+            
+            column.Item().BorderTop(1).BorderColor(Colors.Grey.Lighten1).PaddingTop(5).Row(row =>
             {
-                text.Span("Page ");
-                text.CurrentPageNumber();
-                text.Span(" of ");
-                text.TotalPages();
+                row.RelativeItem().DefaultTextStyle(x => x.FontSize(7).FontColor(Colors.Grey.Darken1)).Text(text =>
+                {
+                    text.Span("This is a computer-generated invoice and does not require a signature. | ")
+                        .Italic();
+                    text.Span("For queries, contact: " + Model.Seller.Email);
+                });
+
+                row.AutoItem().AlignRight().DefaultTextStyle(x => x.FontSize(8)).Text(text =>
+                {
+                    text.Span("Page ");
+                    text.CurrentPageNumber();
+                    text.Span(" of ");
+                    text.TotalPages();
+                });
             });
         });
     }

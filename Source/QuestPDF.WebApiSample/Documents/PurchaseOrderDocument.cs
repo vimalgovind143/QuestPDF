@@ -29,7 +29,19 @@ public class PurchaseOrderDocument : IDocument
             page.Header().Element(ComposeHeader);
             page.Content().Element(ComposeContent);
             page.Footer().Element(ComposeFooter);
+            
+            // Add watermark
+            page.Foreground().Element(ComposeWatermark);
         });
+    }
+
+    void ComposeWatermark(IContainer container)
+    {
+        var watermark = ImageHelper.GetWatermark();
+        if (watermark != null && watermark.Length > 0)
+        {
+            container.AlignCenter().AlignMiddle().Width(400).Image(watermark);
+        }
     }
 
     void ComposeHeader(IContainer container)
@@ -50,6 +62,23 @@ public class PurchaseOrderDocument : IDocument
                     col.Item().Text(Model.Buyer.CompanyName)
                         .FontSize(14)
                         .SemiBold();
+                });
+                
+                // Logo in top right
+                row.ConstantItem(100).Column(logoCol =>
+                {
+                    var logo = ImageHelper.GetCompanyLogo();
+                    if (logo != null && logo.Length > 0)
+                    {
+                        logoCol.Item().Height(55).Image(logo, ImageScaling.FitArea);
+                    }
+                    else
+                    {
+                        logoCol.Item().Height(55).Background(Colors.Orange.Lighten4)
+                            .AlignCenter().AlignMiddle()
+                            .Text("LOGO")
+                            .FontSize(12);
+                    }
                 });
 
                 row.ConstantItem(180).Background(Colors.Orange.Lighten4).Padding(8).Column(col =>
@@ -267,8 +296,16 @@ public class PurchaseOrderDocument : IDocument
 
                 row.RelativeItem().Column(col =>
                 {
-                    col.Item().BorderTop(1).BorderColor(Colors.Black).PaddingTop(5)
-                        .Text("Date").FontSize(9).SemiBold();
+                    var seal = ImageHelper.GetCompanySeal();
+                    if (seal != null && seal.Length > 0)
+                    {
+                        col.Item().Width(70).Height(70).Image(seal, ImageScaling.FitArea);
+                    }
+                    else
+                    {
+                        col.Item().BorderTop(1).BorderColor(Colors.Black).PaddingTop(5)
+                            .Text("Company Seal").FontSize(9).SemiBold();
+                    }
                 });
             });
         });
@@ -276,17 +313,44 @@ public class PurchaseOrderDocument : IDocument
 
     void ComposeFooter(IContainer container)
     {
-        container.BorderTop(1).BorderColor(Colors.Grey.Lighten1).PaddingTop(5).Row(row =>
+        container.Column(column =>
         {
-            row.RelativeItem().Text("This is a computer-generated purchase order.")
-                .FontSize(7).Italic().FontColor(Colors.Grey.Darken1);
-
-            row.AutoItem().DefaultTextStyle(x => x.FontSize(8)).Text(text =>
+            column.Spacing(5);
+            
+            // Footer with logo and company info
+            column.Item().Row(row =>
             {
-                text.Span("Page ");
-                text.CurrentPageNumber();
-                text.Span(" of ");
-                text.TotalPages();
+                var footerLogo = ImageHelper.GetFooterLogo();
+                if (footerLogo != null && footerLogo.Length > 0)
+                {
+                    row.ConstantItem(40).Height(30).Image(footerLogo, ImageScaling.FitArea);
+                    row.ConstantItem(10);
+                }
+                
+                row.RelativeItem().Column(col =>
+                {
+                    col.Item().Text(Model.Buyer.CompanyName)
+                        .FontSize(8)
+                        .SemiBold()
+                        .FontColor(Colors.Orange.Darken2);
+                    col.Item().Text($"{Model.Buyer.Address}, {Model.Buyer.City}")
+                        .FontSize(7)
+                        .FontColor(Colors.Grey.Darken1);
+                });
+            });
+            
+            column.Item().BorderTop(1).BorderColor(Colors.Grey.Lighten1).PaddingTop(5).Row(row =>
+            {
+                row.RelativeItem().Text("This is a computer-generated purchase order.")
+                    .FontSize(7).Italic().FontColor(Colors.Grey.Darken1);
+
+                row.AutoItem().DefaultTextStyle(x => x.FontSize(8)).Text(text =>
+                {
+                    text.Span("Page ");
+                    text.CurrentPageNumber();
+                    text.Span(" of ");
+                    text.TotalPages();
+                });
             });
         });
     }
