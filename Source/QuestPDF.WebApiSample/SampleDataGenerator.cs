@@ -350,4 +350,157 @@ public static class SampleDataGenerator
             ReviewedBy = "Rashid Al-Khater - Head of IT"
         };
     }
+
+    public static DynamicColumnReportModel GetSampleAttendanceReport()
+    {
+        return new DynamicColumnReportModel
+        {
+            ReportTitle = "Employee Attendance Report",
+            ReportSubtitle = "Daily Attendance Tracking - October 2025",
+            GeneratedDate = DateTime.Now,
+            GeneratedBy = "Layla Ahmed - HR Manager",
+            
+            ColumnHeaders = new List<string>
+            {
+                "Oct 1", "Oct 2", "Oct 3", "Oct 4", "Oct 5", "Oct 8", "Oct 9", "Oct 10", "Oct 11", "Oct 12",
+                "Present Days", "Absent Days", "Late Days", "Attendance %"
+            },
+            
+            DataRows = new List<DynamicDataRow>
+            {
+                new() { RowLabel = "Ahmed Al-Khalifa", Values = new List<string> { "P", "P", "P", "P", "P", "P", "P", "P", "P", "P", "10", "0", "0", "100%" } },
+                new() { RowLabel = "Sarah Mohammed", Values = new List<string> { "P", "P", "A", "P", "P", "P", "P", "P", "P", "P", "9", "1", "0", "90%" } },
+                new() { RowLabel = "Mohammed Al-Mansoori", Values = new List<string> { "P", "P", "P", "L", "P", "P", "P", "P", "P", "P", "10", "0", "1", "100%" } },
+                new() { RowLabel = "Fatima Hassan", Values = new List<string> { "P", "P", "P", "P", "P", "P", "P", "A", "P", "P", "9", "1", "0", "90%" } },
+                new() { RowLabel = "Khalid Ibrahim", Values = new List<string> { "P", "P", "P", "P", "P", "P", "P", "P", "P", "P", "10", "0", "0", "100%" } },
+                new() { RowLabel = "Noora Ali", Values = new List<string> { "P", "A", "P", "P", "P", "P", "L", "P", "P", "P", "9", "1", "1", "90%" } },
+                new() { RowLabel = "Hamad Yousif", Values = new List<string> { "P", "P", "P", "P", "P", "P", "P", "P", "P", "P", "10", "0", "0", "100%" } },
+                new() { RowLabel = "Mariam Abdullah", Values = new List<string> { "P", "P", "P", "P", "L", "P", "P", "P", "P", "P", "10", "0", "1", "100%" } },
+                new() { RowLabel = "Ali Salman", Values = new List<string> { "P", "P", "P", "P", "P", "A", "P", "P", "P", "P", "9", "1", "0", "90%" } },
+                new() { RowLabel = "Aysha Jamal", Values = new List<string> { "P", "P", "P", "P", "P", "P", "P", "P", "P", "P", "10", "0", "0", "100%" } }
+            },
+            
+            SummaryRow = new DynamicDataRow
+            {
+                RowLabel = "DEPARTMENT TOTAL",
+                Values = new List<string> { "10", "9", "9", "9", "9", "9", "9", "9", "10", "10", "96", "4", "3", "96%" }
+            },
+            
+            FooterNotes = "P = Present, A = Absent, L = Late (after 9:00 AM). Weekend days (Oct 6, 7) excluded. Department target attendance: 95%."
+        };
+    }
+
+    public static DynamicColumnReportModel GetSampleAssetsReport()
+    {
+        return new DynamicColumnReportModel
+        {
+            ReportTitle = "IT Assets Distribution Report",
+            ReportSubtitle = "Asset Count by Location and Status - October 2025",
+            GeneratedDate = DateTime.Now,
+            GeneratedBy = "Khalid Ibrahim - IT Support Specialist",
+            
+            ColumnHeaders = new List<string>
+            {
+                "Head Office", "Branch 1", "Branch 2", "Warehouse", "Remote", "Total Assets", "Active", "Maintenance", "Retired"
+            },
+            
+            DataRows = new List<DynamicDataRow>
+            {
+                new() { RowLabel = "Desktop Computers", Values = new List<string> { "45", "12", "8", "2", "15", "82", "78", "3", "1" } },
+                new() { RowLabel = "Laptops", Values = new List<string> { "28", "8", "6", "0", "25", "67", "65", "2", "0" } },
+                new() { RowLabel = "Servers", Values = new List<string> { "15", "2", "1", "3", "0", "21", "19", "2", "0" } },
+                new() { RowLabel = "Network Switches", Values = new List<string> { "8", "3", "2", "1", "0", "14", "14", "0", "0" } },
+                new() { RowLabel = "Printers", Values = new List<string> { "12", "4", "3", "1", "2", "22", "20", "1", "1" } },
+                new() { RowLabel = "Monitors", Values = new List<string> { "65", "18", "12", "5", "20", "120", "115", "4", "1" } },
+                new() { RowLabel = "UPS Units", Values = new List<string> { "25", "6", "4", "8", "3", "46", "44", "2", "0" } },
+                new() { RowLabel = "Mobile Devices", Values = new List<string> { "35", "8", "6", "0", "12", "61", "58", "2", "1" }, IsHighlighted = true },
+                new() { RowLabel = "Storage Arrays", Values = new List<string> { "5", "1", "0", "2", "0", "8", "7", "1", "0" } },
+                new() { RowLabel = "Backup Devices", Values = new List<string> { "8", "2", "1", "4", "0", "15", "14", "1", "0" } }
+            },
+            
+            SummaryRow = new DynamicDataRow
+            {
+                RowLabel = "TOTAL ASSETS",
+                Values = new List<string> { "246", "64", "43", "26", "77", "456", "434", "18", "4" }
+            },
+            
+            FooterNotes = "Asset status: Active (in use), Maintenance (under repair/upgrade), Retired (end of life). Mobile devices highlighted due to high remote usage. Next audit scheduled: November 15, 2025."
+        };
+    }
+
+    public static DynamicColumnReportModel GetSampleBudgetAnalysisReport()
+    {
+        return new DynamicColumnReportModel
+        {
+            ReportTitle = "IT Department Budget vs Actual Analysis",
+            ReportSubtitle = "Monthly Budget Performance - 2025 (in BHD)",
+            GeneratedDate = DateTime.Now,
+            GeneratedBy = "Ali Salman - IT Manager",
+            
+            ColumnHeaders = new List<string>
+            {
+                "Budget", "Jan Actual", "Feb Actual", "Mar Actual", "Apr Actual", "May Actual", "Jun Actual", "YTD Actual", "Variance", "% Used"
+            },
+            
+            DataRows = new List<DynamicDataRow>
+            {
+                new() { RowLabel = "Hardware Purchases", Values = new List<string> { "50,000", "4,200", "3,800", "8,500", "2,100", "6,200", "4,800", "29,600", "20,400", "59%" } },
+                new() { RowLabel = "Software Licenses", Values = new List<string> { "25,000", "2,100", "1,800", "2,200", "1,900", "2,300", "2,000", "12,300", "12,700", "49%" } },
+                new() { RowLabel = "Cloud Services", Values = new List<string> { "18,000", "1,450", "1,520", "1,680", "1,720", "1,850", "1,900", "10,120", "7,880", "56%" } },
+                new() { RowLabel = "Maintenance Contracts", Values = new List<string> { "15,000", "1,200", "1,200", "1,350", "1,200", "1,400", "1,200", "7,550", "7,450", "50%" } },
+                new() { RowLabel = "Training & Certification", Values = new List<string> { "8,000", "650", "0", "1,200", "800", "0", "950", "3,600", "4,400", "45%" } },
+                new() { RowLabel = "Telecommunications", Values = new List<string> { "12,000", "980", "1,020", "1,050", "1,100", "1,080", "1,150", "6,380", "5,620", "53%" } },
+                new() { RowLabel = "Security Solutions", Values = new List<string> { "20,000", "1,800", "1,600", "2,200", "1,500", "2,100", "1,900", "11,100", "8,900", "56%" } },
+                new() { RowLabel = "Backup & Recovery", Values = new List<string> { "10,000", "800", "750", "900", "850", "950", "800", "5,050", "4,950", "51%" }, IsHighlighted = true },
+                new() { RowLabel = "Professional Services", Values = new List<string> { "22,000", "2,200", "1,800", "2,500", "1,900", "2,800", "2,200", "13,400", "8,600", "61%" }, IsHighlighted = true },
+                new() { RowLabel = "Miscellaneous", Values = new List<string> { "5,000", "320", "280", "450", "380", "420", "350", "2,200", "2,800", "44%" } }
+            },
+            
+            SummaryRow = new DynamicDataRow
+            {
+                RowLabel = "TOTAL BUDGET",
+                Values = new List<string> { "185,000", "15,700", "14,770", "22,030", "13,450", "19,100", "17,250", "102,300", "82,700", "55%" }
+            },
+            
+            FooterNotes = "Budget utilization at 55% by mid-year is on track. Highlighted categories show higher than expected spending. Professional Services over-budget due to emergency security audit. Backup & Recovery under-budget - consider additional investments."
+        };
+    }
+
+    public static DynamicColumnReportModel GetSampleProjectTimelineReport()
+    {
+        return new DynamicColumnReportModel
+        {
+            ReportTitle = "Active Projects Timeline & Status Report",
+            ReportSubtitle = "Project Milestones and Progress Tracking - Q4 2025",
+            GeneratedDate = DateTime.Now,
+            GeneratedBy = "Ali Salman - IT Manager",
+            
+            ColumnHeaders = new List<string>
+            {
+                "Planning", "Design", "Development", "Testing", "Deployment", "Go-Live", "Progress %", "Status", "Risk Level"
+            },
+            
+            DataRows = new List<DynamicDataRow>
+            {
+                new() { RowLabel = "ERP System Upgrade", Values = new List<string> { "✓", "✓", "✓", "In Progress", "Pending", "Dec 15", "75%", "On Track", "Low" } },
+                new() { RowLabel = "Mobile App Development", Values = new List<string> { "✓", "✓", "In Progress", "Pending", "Pending", "Jan 30", "45%", "On Track", "Medium" } },
+                new() { RowLabel = "Network Infrastructure", Values = new List<string> { "✓", "✓", "✓", "✓", "In Progress", "Nov 20", "85%", "Ahead", "Low" }, IsHighlighted = true },
+                new() { RowLabel = "Security Audit System", Values = new List<string> { "✓", "In Progress", "Pending", "Pending", "Pending", "Feb 28", "25%", "On Track", "Low" } },
+                new() { RowLabel = "Data Analytics Platform", Values = new List<string> { "✓", "✓", "✓", "In Progress", "Pending", "Jan 15", "70%", "Delayed", "High" }, IsHighlighted = true },
+                new() { RowLabel = "Cloud Migration Phase 2", Values = new List<string> { "✓", "✓", "In Progress", "Pending", "Pending", "Mar 30", "40%", "On Track", "Medium" } },
+                new() { RowLabel = "Backup System Overhaul", Values = new List<string> { "✓", "✓", "✓", "✓", "✓", "Completed", "100%", "Complete", "None" } },
+                new() { RowLabel = "Employee Portal V2", Values = new List<string> { "✓", "In Progress", "Pending", "Pending", "Pending", "Apr 15", "20%", "On Track", "Low" } },
+                new() { RowLabel = "IoT Sensors Integration", Values = new List<string> { "✓", "✓", "In Progress", "Pending", "Pending", "May 30", "35%", "On Track", "Medium" } },
+                new() { RowLabel = "AI Chatbot Implementation", Values = new List<string> { "In Progress", "Pending", "Pending", "Pending", "Pending", "Jun 30", "15%", "Planning", "Low" } }
+            },
+            
+            SummaryRow = new DynamicDataRow
+            {
+                RowLabel = "PORTFOLIO SUMMARY",
+                Values = new List<string> { "9/10", "7/10", "5/10", "3/10", "2/10", "1/10", "51%", "7 Active", "2 High Risk" }
+            },
+            
+            FooterNotes = "✓ = Completed, In Progress = Currently active. Highlighted projects need attention: Network Infrastructure ahead of schedule (resource reallocation opportunity), Data Analytics Platform delayed (additional resources required). Portfolio health: 70% projects on track."
+        };
+    }
 }

@@ -339,4 +339,220 @@ public class PdfController : ControllerBase
     }
 
     #endregion
+
+    #region Attendance Report (Dynamic Columns)
+
+    /// <summary>
+    /// Generates an Employee Attendance Report with dynamic date columns
+    /// </summary>
+    [HttpGet("attendance-report/sample")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GenerateAttendanceReportSample()
+    {
+        var model = SampleDataGenerator.GetSampleAttendanceReport();
+        var document = new DynamicColumnReportDocument(model);
+        
+        var pdfBytes = document.GeneratePdf();
+        
+        return File(pdfBytes, "application/pdf", "attendance-report-sample.pdf");
+    }
+
+    /// <summary>
+    /// Generates a custom Attendance Report from request body
+    /// </summary>
+    [HttpPost("attendance-report")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult GenerateAttendanceReport([FromBody] DynamicColumnReportModel model)
+    {
+        if (model == null)
+            return BadRequest("Attendance report model is required");
+
+        try
+        {
+            var document = new DynamicColumnReportDocument(model);
+            var pdfBytes = document.GeneratePdf();
+            
+            return File(pdfBytes, "application/pdf", "attendance-report.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating attendance report PDF");
+            return StatusCode(500, $"Error generating PDF: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Gets sample attendance report data as JSON
+    /// </summary>
+    [HttpGet("attendance-report/sample/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<DynamicColumnReportModel> GetSampleAttendanceReportJson()
+    {
+        return Ok(SampleDataGenerator.GetSampleAttendanceReport());
+    }
+
+    #endregion
+
+    #region Assets Report (Dynamic Columns)
+
+    /// <summary>
+    /// Generates an IT Assets Report with dynamic location/status columns
+    /// </summary>
+    [HttpGet("assets-report/sample")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GenerateAssetsReportSample()
+    {
+        var model = SampleDataGenerator.GetSampleAssetsReport();
+        var document = new DynamicColumnReportDocument(model);
+        
+        var pdfBytes = document.GeneratePdf();
+        
+        return File(pdfBytes, "application/pdf", "assets-report-sample.pdf");
+    }
+
+    /// <summary>
+    /// Generates a custom Assets Report from request body
+    /// </summary>
+    [HttpPost("assets-report")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult GenerateAssetsReport([FromBody] DynamicColumnReportModel model)
+    {
+        if (model == null)
+            return BadRequest("Assets report model is required");
+
+        try
+        {
+            var document = new DynamicColumnReportDocument(model);
+            var pdfBytes = document.GeneratePdf();
+            
+            return File(pdfBytes, "application/pdf", "assets-report.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating assets report PDF");
+            return StatusCode(500, $"Error generating PDF: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Gets sample assets report data as JSON
+    /// </summary>
+    [HttpGet("assets-report/sample/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<DynamicColumnReportModel> GetSampleAssetsReportJson()
+    {
+        return Ok(SampleDataGenerator.GetSampleAssetsReport());
+    }
+
+    #endregion
+
+    #region Budget Analysis Report (Dynamic Columns)
+
+    /// <summary>
+    /// Generates a Budget vs Actual Analysis Report with dynamic month columns
+    /// </summary>
+    [HttpGet("budget-analysis/sample")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GenerateBudgetAnalysisReportSample()
+    {
+        var model = SampleDataGenerator.GetSampleBudgetAnalysisReport();
+        var document = new DynamicColumnReportDocument(model);
+        
+        var pdfBytes = document.GeneratePdf();
+        
+        return File(pdfBytes, "application/pdf", "budget-analysis-sample.pdf");
+    }
+
+    /// <summary>
+    /// Generates a custom Budget Analysis Report from request body
+    /// </summary>
+    [HttpPost("budget-analysis")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult GenerateBudgetAnalysisReport([FromBody] DynamicColumnReportModel model)
+    {
+        if (model == null)
+            return BadRequest("Budget analysis report model is required");
+
+        try
+        {
+            var document = new DynamicColumnReportDocument(model);
+            var pdfBytes = document.GeneratePdf();
+            
+            return File(pdfBytes, "application/pdf", "budget-analysis.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating budget analysis report PDF");
+            return StatusCode(500, $"Error generating PDF: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Gets sample budget analysis report data as JSON
+    /// </summary>
+    [HttpGet("budget-analysis/sample/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<DynamicColumnReportModel> GetSampleBudgetAnalysisReportJson()
+    {
+        return Ok(SampleDataGenerator.GetSampleBudgetAnalysisReport());
+    }
+
+    #endregion
+
+    #region Project Timeline Report (Dynamic Columns)
+
+    /// <summary>
+    /// Generates a Project Timeline Report with dynamic milestone columns
+    /// </summary>
+    [HttpGet("project-timeline/sample")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GenerateProjectTimelineReportSample()
+    {
+        var model = SampleDataGenerator.GetSampleProjectTimelineReport();
+        var document = new DynamicColumnReportDocument(model);
+        
+        var pdfBytes = document.GeneratePdf();
+        
+        return File(pdfBytes, "application/pdf", "project-timeline-sample.pdf");
+    }
+
+    /// <summary>
+    /// Generates a custom Project Timeline Report from request body
+    /// </summary>
+    [HttpPost("project-timeline")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult GenerateProjectTimelineReport([FromBody] DynamicColumnReportModel model)
+    {
+        if (model == null)
+            return BadRequest("Project timeline report model is required");
+
+        try
+        {
+            var document = new DynamicColumnReportDocument(model);
+            var pdfBytes = document.GeneratePdf();
+            
+            return File(pdfBytes, "application/pdf", "project-timeline.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating project timeline report PDF");
+            return StatusCode(500, $"Error generating PDF: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Gets sample project timeline report data as JSON
+    /// </summary>
+    [HttpGet("project-timeline/sample/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<DynamicColumnReportModel> GetSampleProjectTimelineReportJson()
+    {
+        return Ok(SampleDataGenerator.GetSampleProjectTimelineReport());
+    }
+
+    #endregion
 }

@@ -41,6 +41,8 @@ A real-time PDF generation web API built with **ASP.NET Core 8** and **QuestPDF*
 
 All endpoints support both GET (with sample data) and POST (with custom data) methods, plus JSON data retrieval for testing.
 
+### Core Business Documents
+
 ### 1. Standard TAX Invoice
 
 Professional tax invoice with VAT calculations, multi-page support, and Arabic text.
@@ -107,6 +109,90 @@ curl http://localhost:5100/api/pdf/dynamic-column-report/sample --output dynamic
 
 ---
 
+### 4a. Employee Attendance Report (Dynamic Columns)
+
+Daily attendance tracking with dynamic date columns - perfect for HR departments monitoring employee presence.
+
+**GET** `/api/pdf/attendance-report/sample` - Generate sample attendance report  
+**POST** `/api/pdf/attendance-report` - Generate custom attendance report  
+**GET** `/api/pdf/attendance-report/sample/json` - Get sample data as JSON
+
+**Example:**
+```bash
+curl http://localhost:5100/api/pdf/attendance-report/sample --output attendance-report.pdf
+```
+
+**Key Features:**
+- Daily attendance columns (P/A/L indicators)
+- Summary statistics (Present/Absent/Late days)
+- Attendance percentage calculation
+- Department-level totals
+
+---
+
+### 4b. IT Assets Distribution Report (Dynamic Columns)
+
+Asset tracking across multiple locations and status categories - ideal for IT asset management.
+
+**GET** `/api/pdf/assets-report/sample` - Generate sample assets report  
+**POST** `/api/pdf/assets-report` - Generate custom assets report  
+**GET** `/api/pdf/assets-report/sample/json` - Get sample data as JSON
+
+**Example:**
+```bash
+curl http://localhost:5100/api/pdf/assets-report/sample --output assets-report.pdf
+```
+
+**Key Features:**
+- Location-based asset distribution
+- Status tracking (Active/Maintenance/Retired)
+- Asset type categorization
+- Total counts and summaries
+
+---
+
+### 4c. Budget Analysis Report (Dynamic Columns)
+
+Budget vs actual spending analysis with monthly breakdown - perfect for financial tracking and variance analysis.
+
+**GET** `/api/pdf/budget-analysis/sample` - Generate sample budget analysis  
+**POST** `/api/pdf/budget-analysis` - Generate custom budget analysis  
+**GET** `/api/pdf/budget-analysis/sample/json` - Get sample data as JSON
+
+**Example:**
+```bash
+curl http://localhost:5100/api/pdf/budget-analysis/sample --output budget-analysis.pdf
+```
+
+**Key Features:**
+- Monthly actual vs budget comparison
+- Year-to-date totals and variances
+- Budget utilization percentages
+- Highlighted over/under-budget categories
+
+---
+
+### 4d. Project Timeline Report (Dynamic Columns)
+
+Project milestone tracking with status indicators - ideal for project management and progress monitoring.
+
+**GET** `/api/pdf/project-timeline/sample` - Generate sample project timeline  
+**POST** `/api/pdf/project-timeline` - Generate custom project timeline  
+**GET** `/api/pdf/project-timeline/sample/json` - Get sample data as JSON
+
+**Example:**
+```bash
+curl http://localhost:5100/api/pdf/project-timeline/sample --output project-timeline.pdf
+```
+
+**Key Features:**
+- Milestone progress tracking (✓/In Progress/Pending)
+- Project status and risk level indicators
+- Progress percentage calculation
+- Portfolio-level summary statistics
+
+---
+
 ### 5. Product Catalog (A4 Landscape)
 
 Wide-format product catalog showcasing multiple categories and products - demonstrates A4 landscape orientation.
@@ -149,6 +235,12 @@ curl http://localhost:5100/api/pdf/employee-report/sample --output employee-repo
 - Attendance tracking
 - Signature sections
 
+---
+
+## Dynamic Column Report Examples
+
+The following specialized reports demonstrate the flexibility of the dynamic column system for various business scenarios:
+
 ## Project Structure
 
 ```
@@ -183,6 +275,10 @@ QuestPDF.WebApiSample/
 | **Receipt** | A5 | Portrait | Payment confirmations |
 | **Purchase Order** | A4 | Portrait | Procurement documents |
 | **Dynamic Column Report** | A4 | Portrait | Analytics & sales reports |
+| **Attendance Report** | A4 | Portrait | Employee attendance tracking |
+| **Assets Report** | A4 | Portrait | IT asset distribution & status |
+| **Budget Analysis** | A4 | Portrait | Financial budget vs actual |
+| **Project Timeline** | A4 | Portrait | Project milestone tracking |
 | **Product Catalog** | A4 | **Landscape** | Product listings & catalogs |
 | **Employee Report** | A4 | Portrait | HR reports & directories |
 
