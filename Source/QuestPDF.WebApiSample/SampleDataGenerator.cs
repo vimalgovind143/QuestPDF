@@ -474,12 +474,12 @@ public static class SampleDataGenerator
             ReportSubtitle = "Project Milestones and Progress Tracking - Q4 2025",
             GeneratedDate = DateTime.Now,
             GeneratedBy = "Ali Salman - IT Manager",
-            
+
             ColumnHeaders = new List<string>
             {
                 "Planning", "Design", "Development", "Testing", "Deployment", "Go-Live", "Progress %", "Status", "Risk Level"
             },
-            
+
             DataRows = new List<DynamicDataRow>
             {
                 new() { RowLabel = "ERP System Upgrade", Values = new List<string> { "✓", "✓", "✓", "In Progress", "Pending", "Dec 15", "75%", "On Track", "Low" } },
@@ -493,14 +493,109 @@ public static class SampleDataGenerator
                 new() { RowLabel = "IoT Sensors Integration", Values = new List<string> { "✓", "✓", "In Progress", "Pending", "Pending", "May 30", "35%", "On Track", "Medium" } },
                 new() { RowLabel = "AI Chatbot Implementation", Values = new List<string> { "In Progress", "Pending", "Pending", "Pending", "Pending", "Jun 30", "15%", "Planning", "Low" } }
             },
-            
+
             SummaryRow = new DynamicDataRow
             {
                 RowLabel = "PORTFOLIO SUMMARY",
                 Values = new List<string> { "9/10", "7/10", "5/10", "3/10", "2/10", "1/10", "51%", "7 Active", "2 High Risk" }
             },
-            
+
             FooterNotes = "✓ = Completed, In Progress = Currently active. Highlighted projects need attention: Network Infrastructure ahead of schedule (resource reallocation opportunity), Data Analytics Platform delayed (additional resources required). Portfolio health: 70% projects on track."
+        };
+    }
+
+    public static GenericReportModel GetSampleGenericReport()
+    {
+        return new GenericReportModel
+        {
+            ReportName = "Monthly Sales Report",
+            DateFilter = "October 2025",
+            GeneratedBy = "Sales Manager",
+            PageOrientation = "Portrait", // Can be "Portrait" or "Landscape"
+            TextDirection = "LTR", // "LTR" for English, "RTL" for Arabic/Hebrew
+
+            ColumnNames = new List<string>
+            {
+                "Product",
+                "Units Sold",
+                "Revenue (BHD)",
+                "Profit Margin %",
+                "Target Achievement %"
+            },
+
+            Data = new List<List<string>>
+            {
+                new() { "Laptop Computers", "45", "67,500", "15.2%", "112%" },
+                new() { "Smartphones", "128", "38,400", "12.8%", "98%" },
+                new() { "Tablets", "67", "20,100", "18.5%", "134%" },
+                new() { "Desktop PCs", "23", "34,500", "22.1%", "77%" },
+                new() { "Monitors", "89", "17,800", "14.7%", "89%" },
+                new() { "Printers", "34", "10,200", "16.3%", "113%" },
+                new() { "Accessories", "156", "15,600", "25.4%", "156%" },
+                new() { "Software Licenses", "78", "23,400", "45.2%", "130%" }
+            },
+
+            SummaryRow = new List<string>
+            {
+                "TOTAL",
+                "620",
+                "227,500",
+                "21.8%",
+                "114%"
+            },
+
+            FooterNotes = "Sales performance exceeded targets for the month. Accessories and Software Licenses showed exceptional growth. Desktop PCs underperformed and require marketing focus. Overall profit margin improved by 2.3% compared to last month.",
+
+            // Optional: Add custom header and footer logos as Base64 strings
+            // HeaderLogoBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAUA...", // Your base64 encoded image
+            // FooterLogoBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAUA..."  // Your base64 encoded image
+        };
+    }
+
+    /// <summary>
+    /// Sample Arabic report - demonstrates RTL support
+    /// </summary>
+    public static GenericReportModel GetSampleGenericReportArabic()
+    {
+        return new GenericReportModel
+        {
+            ReportName = "تقرير المبيعات الشهري",
+            DateFilter = "أكتوبر 2025",
+            GeneratedBy = "مدير المبيعات",
+            PageOrientation = "Portrait",
+            TextDirection = "RTL", // Enable RTL for Arabic
+
+            ColumnNames = new List<string>
+            {
+                "المنتج",
+                "الوحدات المباعة",
+                "الإيرادات (د.ب)",
+                "هامش الربح %",
+                "تحقيق الهدف %"
+            },
+
+            Data = new List<List<string>>
+            {
+                new() { "أجهزة الكمبيوتر المحمولة", "45", "67,500", "15.2%", "112%" },
+                new() { "الهواتف الذكية", "128", "38,400", "12.8%", "98%" },
+                new() { "الأجهزة اللوحية", "67", "20,100", "18.5%", "134%" },
+                new() { "أجهزة الكمبيوتر المكتبية", "23", "34,500", "22.1%", "77%" },
+                new() { "الشاشات", "89", "17,800", "14.7%", "89%" },
+                new() { "الطابعات", "34", "10,200", "16.3%", "113%" },
+                new() { "الملحقات", "156", "15,600", "25.4%", "156%" },
+                new() { "تراخيص البرامج", "78", "23,400", "45.2%", "130%" }
+            },
+
+            SummaryRow = new List<string>
+            {
+                "المجموع",
+                "620",
+                "227,500",
+                "21.8%",
+                "114%"
+            },
+
+            FooterNotes = "تجاوز أداء المبيعات الأهداف المحددة للشهر. أظهرت الملحقات وتراخيص البرامج نموًا استثنائيًا. أجهزة الكمبيوتر المكتبية لم تحقق الأداء المطلوب وتحتاج إلى تركيز تسويقي. تحسن هامش الربح الإجمالي بنسبة 2.3٪ مقارنة بالشهر الماضي."
         };
     }
 }

@@ -340,6 +340,93 @@ public class PdfController : ControllerBase
 
     #endregion
 
+    #region Generic Report
+
+    /// <summary>
+    /// Generates a Generic Report with sample data
+    /// </summary>
+    [HttpGet("generic-report/sample")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GenerateGenericReportSample()
+    {
+        var model = SampleDataGenerator.GetSampleGenericReport();
+        var document = new GenericReportDocument(model);
+
+        var pdfBytes = document.GeneratePdf();
+
+        return File(pdfBytes, "application/pdf", "generic-report-sample.pdf");
+    }
+
+    /// <summary>
+    /// Generates a custom Generic Report from request body
+    /// </summary>
+    [HttpPost("generic-report")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult GenerateGenericReport([FromBody] GenericReportModel model)
+    {
+        if (model == null)
+            return BadRequest("Generic report model is required");
+
+        if (string.IsNullOrEmpty(model.ReportName))
+            return BadRequest("Report name is required");
+
+        if (model.ColumnNames == null || !model.ColumnNames.Any())
+            return BadRequest("Column names are required");
+
+        if (model.Data == null || !model.Data.Any())
+            return BadRequest("Data rows are required");
+
+        try
+        {
+            var document = new GenericReportDocument(model);
+            var pdfBytes = document.GeneratePdf();
+
+            return File(pdfBytes, "application/pdf", $"{model.ReportName.Replace(" ", "-").ToLower()}-report.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating generic report PDF");
+            return StatusCode(500, $"Error generating PDF: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Gets sample generic report data as JSON
+    /// </summary>
+    [HttpGet("generic-report/sample/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<GenericReportModel> GetSampleGenericReportJson()
+    {
+        return Ok(SampleDataGenerator.GetSampleGenericReport());
+    }
+
+    /// <summary>
+    /// Generates a Generic Report with Arabic sample data (RTL support)
+    /// </summary>
+    [HttpGet("generic-report/sample/arabic")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GenerateGenericReportArabicSample()
+    {
+        var model = SampleDataGenerator.GetSampleGenericReportArabic();
+        var document = new GenericReportDocument(model);
+        var pdfBytes = document.GeneratePdf();
+
+        return File(pdfBytes, "application/pdf", "generic-report-arabic-sample.pdf");
+    }
+
+    /// <summary>
+    /// Gets sample Arabic generic report data as JSON
+    /// </summary>
+    [HttpGet("generic-report/sample/arabic/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<GenericReportModel> GetSampleGenericReportArabicJson()
+    {
+        return Ok(SampleDataGenerator.GetSampleGenericReportArabic());
+    }
+
+    #endregion
+
     #region Attendance Report (Dynamic Columns)
 
     /// <summary>
