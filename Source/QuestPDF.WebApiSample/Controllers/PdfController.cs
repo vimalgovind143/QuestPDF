@@ -589,6 +589,141 @@ public class PdfController : ControllerBase
 
     #endregion
 
+    #region Employee Payslip
+
+    /// <summary>
+    /// Generates an Employee Payslip with sample data and QR code
+    /// </summary>
+    [HttpGet("employee-payslip/sample")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GenerateEmployeePayslipSample()
+    {
+        var model = SampleDataGenerator.GetSampleEmployeePayslip();
+        var document = new EmployeePayslipDocument(model);
+        
+        var pdfBytes = document.GeneratePdf();
+        
+        return File(pdfBytes, "application/pdf", $"payslip-{model.PayslipNumber}.pdf");
+    }
+
+    /// <summary>
+    /// Generates an Employee Payslip with password protection (password: secure123)
+    /// </summary>
+    [HttpGet("employee-payslip/sample/protected")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GenerateEmployeePayslipSampleProtected()
+    {
+        var model = SampleDataGenerator.GetSampleEmployeePayslipWithPassword();
+        var document = new EmployeePayslipDocument(model);
+        
+        var pdfBytes = document.GeneratePdf();
+        
+        // Apply password protection if password is provided
+        if (!string.IsNullOrEmpty(model.Password))
+        {
+            var tempInputFile = Path.GetTempFileName();
+            var tempOutputFile = Path.GetTempFileName();
+            
+            try
+            {
+                System.IO.File.WriteAllBytes(tempInputFile, pdfBytes);
+                
+                DocumentOperation.LoadFile(tempInputFile)
+                    .Encrypt(new DocumentOperation.Encryption128Bit
+                    {
+                        UserPassword = model.Password,
+                        OwnerPassword = model.Password,
+                        AllowPrinting = true,
+                        AllowContentExtraction = false,
+                        AllowAnnotation = false
+                    })
+                    .Save(tempOutputFile);
+                
+                var protectedBytes = System.IO.File.ReadAllBytes(tempOutputFile);
+                return File(protectedBytes, "application/pdf", $"payslip-{model.PayslipNumber}-protected.pdf");
+            }
+            finally
+            {
+                if (System.IO.File.Exists(tempInputFile))
+                    System.IO.File.Delete(tempInputFile);
+                if (System.IO.File.Exists(tempOutputFile))
+                    System.IO.File.Delete(tempOutputFile);
+            }
+        }
+        
+        return File(pdfBytes, "application/pdf", $"payslip-{model.PayslipNumber}-protected.pdf");
+    }
+
+    /// <summary>
+    /// Generates a custom Employee Payslip from request body
+    /// </summary>
+    [HttpPost("employee-payslip")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult GenerateEmployeePayslip([FromBody] EmployeePayslipModel model)
+    {
+        if (model == null)
+            return BadRequest("Employee payslip model is required");
+
+        try
+        {
+            var document = new EmployeePayslipDocument(model);
+            var pdfBytes = document.GeneratePdf();
+            
+            // Apply password protection if password is provided
+            if (!string.IsNullOrEmpty(model.Password))
+            {
+                var tempInputFile = Path.GetTempFileName();
+                var tempOutputFile = Path.GetTempFileName();
+                
+                try
+                {
+                    System.IO.File.WriteAllBytes(tempInputFile, pdfBytes);
+                    
+                    DocumentOperation.LoadFile(tempInputFile)
+                        .Encrypt(new DocumentOperation.Encryption128Bit
+                        {
+                            UserPassword = model.Password,
+                            OwnerPassword = model.Password,
+                            AllowPrinting = true,
+                            AllowContentExtraction = false,
+                            AllowAnnotation = false
+                        })
+                        .Save(tempOutputFile);
+                    
+                    var protectedBytes = System.IO.File.ReadAllBytes(tempOutputFile);
+                    return File(protectedBytes, "application/pdf", $"payslip-{model.PayslipNumber}.pdf");
+                }
+                finally
+                {
+                    if (System.IO.File.Exists(tempInputFile))
+                        System.IO.File.Delete(tempInputFile);
+                    if (System.IO.File.Exists(tempOutputFile))
+                        System.IO.File.Delete(tempOutputFile);
+                }
+            }
+            
+            return File(pdfBytes, "application/pdf", $"payslip-{model.PayslipNumber}.pdf");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating employee payslip PDF");
+            return StatusCode(500, $"Error generating PDF: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Gets sample employee payslip data as JSON
+    /// </summary>
+    [HttpGet("employee-payslip/sample/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<EmployeePayslipModel> GetSampleEmployeePayslipJson()
+    {
+        return Ok(SampleDataGenerator.GetSampleEmployeePayslip());
+    }
+
+    #endregion
+
     #region Project Timeline Report (Dynamic Columns)
 
     /// <summary>

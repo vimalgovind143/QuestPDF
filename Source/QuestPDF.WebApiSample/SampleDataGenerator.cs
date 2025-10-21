@@ -598,4 +598,95 @@ public static class SampleDataGenerator
             FooterNotes = "تجاوز أداء المبيعات الأهداف المحددة للشهر. أظهرت الملحقات وتراخيص البرامج نموًا استثنائيًا. أجهزة الكمبيوتر المكتبية لم تحقق الأداء المطلوب وتحتاج إلى تركيز تسويقي. تحسن هامش الربح الإجمالي بنسبة 2.3٪ مقارنة بالشهر الماضي."
         };
     }
+
+    public static EmployeePayslipModel GetSampleEmployeePayslip()
+    {
+        var grossPay = 1800m;
+        var basicSalary = 1200m;
+        var housingAllowance = 400m;
+        var transportAllowance = 200m;
+        
+        var socialInsurance = 108m; // 6% of gross
+        var incomeTax = 0m; // Bahrain has no income tax
+        var loanDeduction = 150m;
+        var advanceDeduction = 50m;
+        
+        var totalEarnings = basicSalary + housingAllowance + transportAllowance;
+        var totalDeductions = socialInsurance + incomeTax + loanDeduction + advanceDeduction;
+        var netPay = totalEarnings - totalDeductions;
+
+        return new EmployeePayslipModel
+        {
+            PayslipNumber = "PAY-2025-10-001",
+            PayPeriod = "October 2025",
+            PayDate = new DateTime(2025, 10, 31),
+            WorkingDays = 22,
+            TotalDays = 31,
+
+            Company = new CompanyInfo
+            {
+                CompanyName = "Gulf Technology Solutions W.L.L.",
+                Address = "Building 2345, Road 2417, Block 324",
+                City = "Manama",
+                Country = "Kingdom of Bahrain",
+                Phone = "+973 1729 8888",
+                Email = "hr@gulftech.com.bh",
+                VATRegistrationNumber = "BH100234567800003",
+                CommercialRegistrationNumber = "123456-1"
+            },
+
+            Employee = new EmployeeInfo
+            {
+                EmployeeId = "EMP001",
+                FullName = "Ahmed Al-Khalifa",
+                Position = "Senior System Administrator",
+                Department = "Information Technology",
+                JoinDate = new DateTime(2020, 3, 15),
+                Nationality = "Bahraini",
+                WorkPermitNumber = ""
+            },
+
+            Earnings = new List<EarningsItem>
+            {
+                new() { Description = "Basic Salary", Amount = basicSalary, IsTaxable = true },
+                new() { Description = "Housing Allowance", Amount = housingAllowance, IsTaxable = true },
+                new() { Description = "Transport Allowance", Amount = transportAllowance, IsTaxable = true }
+            },
+
+            Deductions = new List<DeductionItem>
+            {
+                new() { Description = "Social Insurance (6%)", Amount = socialInsurance },
+                new() { Description = "Loan Repayment", Amount = loanDeduction },
+                new() { Description = "Advance Deduction", Amount = advanceDeduction }
+            },
+
+            BankDetails = new BankDetails
+            {
+                BankName = "National Bank of Bahrain B.S.C.",
+                AccountName = "Ahmed Al-Khalifa",
+                AccountNumber = "0123456789",
+                IBAN = "BH67 NBOB 0000 1234 5678 90",
+                SwiftCode = "NBOBBBMX",
+                Branch = "Diplomatic Area Branch"
+            },
+
+            Summary = new PayslipSummary
+            {
+                TotalEarnings = totalEarnings,
+                TotalDeductions = totalDeductions,
+                GrossPay = grossPay,
+                NetPay = netPay
+            },
+
+            PreparedBy = "Layla Ahmed - HR Manager",
+            Password = null // Set to a password string to enable PDF protection
+        };
+    }
+
+    public static EmployeePayslipModel GetSampleEmployeePayslipWithPassword()
+    {
+        var payslip = GetSampleEmployeePayslip();
+        payslip.Password = "secure123"; // Password-protected PDF
+        return payslip;
+    }
 }
