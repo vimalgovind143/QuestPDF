@@ -648,9 +648,9 @@ public static class SampleDataGenerator
 
             Earnings = new List<EarningsItem>
             {
-                new() { Description = "Basic Salary", Amount = basicSalary, IsTaxable = true },
-                new() { Description = "Housing Allowance", Amount = housingAllowance, IsTaxable = true },
-                new() { Description = "Transport Allowance", Amount = transportAllowance, IsTaxable = true }
+                new() { Description = "Basic Salary", Amount = basicSalary },
+                new() { Description = "Housing Allowance", Amount = housingAllowance },
+                new() { Description = "Transport Allowance", Amount = transportAllowance }
             },
 
             Deductions = new List<DeductionItem>
@@ -676,6 +676,12 @@ public static class SampleDataGenerator
                 TotalDeductions = totalDeductions,
                 GrossPay = grossPay,
                 NetPay = netPay
+            },
+
+            BenefitBalance = new List<BenefitBalance>()
+            {
+                new () { BenefitType = "Annual Leave", BalanceAmount = 15 },
+                new () { BenefitType = "Indemnity ", BalanceAmount = 122 }
             },
 
             PreparedBy = "Layla Ahmed - HR Manager",

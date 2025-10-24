@@ -70,6 +70,8 @@ public class EmployeePayslipModel
     /// Password for PDF protection (optional)
     /// </summary>
     public string? Password { get; set; }
+
+    public List<BenefitBalance> BenefitBalance { get; set; } = new();
 }
 
 /// <summary>
@@ -93,7 +95,6 @@ public class EarningsItem
 {
     public string Description { get; set; } = string.Empty;
     public decimal Amount { get; set; }
-    public bool IsTaxable { get; set; } = true;
 }
 
 /// <summary>
@@ -114,4 +115,10 @@ public class PayslipSummary
     public decimal TotalDeductions { get; set; }
     public decimal GrossPay { get; set; }
     public decimal NetPay { get; set; }
+}
+
+public class BenefitBalance
+{
+    public string BenefitType { get; set; } = string.Empty;
+    public decimal BalanceAmount { get; set; }
 }

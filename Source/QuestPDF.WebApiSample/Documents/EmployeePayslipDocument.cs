@@ -33,9 +33,9 @@ public class EmployeePayslipDocument : IDocument
         container.Page(page =>
         {
             page.Size(PageSizes.A4);
-            page.Margin(30);
+            page.Margin(25);
             page.PageColor(Colors.White);
-            page.DefaultTextStyle(x => x.FontSize(10));
+            page.DefaultTextStyle(x => x.FontSize(9));
 
             page.Header().Element(ComposeHeader);
             page.Content().Element(ComposeContent);
@@ -92,18 +92,18 @@ public class EmployeePayslipDocument : IDocument
                 row.RelativeItem().Column(col =>
                 {
                     col.Item().Text("EMPLOYEE PAYSLIP")
-                        .FontSize(24)
+                        .FontSize(20)
                         .Bold()
                         .FontColor(Colors.Blue.Darken3);
 
                     col.Item().Text(Model.Company.CompanyName)
-                        .FontSize(14)
+                        .FontSize(13)
                         .SemiBold();
 
                     col.Item().Text(Model.Company.Address)
-                        .FontSize(9);
+                        .FontSize(8);
                     col.Item().Text($"{Model.Company.City}, {Model.Company.Country}")
-                        .FontSize(9);
+                        .FontSize(8);
                 });
 
                 // Logo in header
@@ -179,6 +179,9 @@ public class EmployeePayslipDocument : IDocument
             // Summary totals
             column.Item().Element(ComposeSummary);
 
+            // Benefit Balance
+            column.Item().Element(ComposeBenefitBalance);
+
             // Bank Details
             column.Item().Element(ComposeBankDetails);
 
@@ -192,7 +195,7 @@ public class EmployeePayslipDocument : IDocument
         container.Background(Colors.Grey.Lighten4).Padding(12).Column(column =>
         {
             column.Item().Text("EMPLOYEE INFORMATION")
-                .FontSize(12)
+                .FontSize(11)
                 .SemiBold()
                 .FontColor(Colors.Blue.Darken2);
 
@@ -222,7 +225,7 @@ public class EmployeePayslipDocument : IDocument
         container.Column(column =>
         {
             column.Item().Text("EARNINGS")
-                .FontSize(12)
+                .FontSize(11)
                 .SemiBold()
                 .FontColor(Colors.Green.Darken2);
 
@@ -258,7 +261,7 @@ public class EmployeePayslipDocument : IDocument
         container.Column(column =>
         {
             column.Item().Text("DEDUCTIONS")
-                .FontSize(12)
+                .FontSize(11)
                 .SemiBold()
                 .FontColor(Colors.Red.Darken2);
 
@@ -294,7 +297,7 @@ public class EmployeePayslipDocument : IDocument
         container.Background(Colors.Blue.Lighten5).Padding(15).Column(column =>
         {
             column.Item().Text("PAYSLIP SUMMARY")
-                .FontSize(14)
+                .FontSize(12)
                 .Bold()
                 .FontColor(Colors.Blue.Darken3)
                 .AlignCenter();
@@ -304,19 +307,19 @@ public class EmployeePayslipDocument : IDocument
                 row.RelativeItem().Column(col =>
                 {
                     col.Item().Text("Gross Pay:").SemiBold();
-                    col.Item().Text($"BHD {Model.Summary.GrossPay:N3}").FontSize(16).Bold();
+                    col.Item().Text($"BHD {Model.Summary.GrossPay:N3}").FontSize(14).Bold();
                 });
 
                 row.RelativeItem().Column(col =>
                 {
                     col.Item().Text("Total Deductions:").SemiBold();
-                    col.Item().Text($"BHD {Model.Summary.TotalDeductions:N3}").FontSize(16).Bold().FontColor(Colors.Red.Darken2);
+                    col.Item().Text($"BHD {Model.Summary.TotalDeductions:N3}").FontSize(14).Bold().FontColor(Colors.Red.Darken2);
                 });
 
                 row.RelativeItem().Column(col =>
                 {
                     col.Item().Text("Net Pay:").SemiBold();
-                    col.Item().Text($"BHD {Model.Summary.NetPay:N3}").FontSize(20).Bold().FontColor(Colors.Green.Darken3);
+                    col.Item().Text($"BHD {Model.Summary.NetPay:N3}").FontSize(16).Bold().FontColor(Colors.Green.Darken3);
                 });
             });
         });
@@ -327,7 +330,7 @@ public class EmployeePayslipDocument : IDocument
         container.Background(Colors.Grey.Lighten4).Padding(10).Column(column =>
         {
             column.Item().Text("BANK DETAILS FOR SALARY TRANSFER")
-                .FontSize(10)
+                .FontSize(9)
                 .SemiBold()
                 .FontColor(Colors.Grey.Darken2);
 
@@ -335,6 +338,41 @@ public class EmployeePayslipDocument : IDocument
             column.Item().Text($"Account Name: {Model.BankDetails.AccountName}");
             column.Item().Text($"Account Number: {Model.BankDetails.AccountNumber}");
             column.Item().Text($"IBAN: {Model.BankDetails.IBAN}");
+        });
+    }
+
+    void ComposeBenefitBalance(IContainer container)
+    {
+        if (Model.BenefitBalance == null || !Model.BenefitBalance.Any())
+            return;
+
+        container.Background(Colors.Grey.Lighten4).Padding(12).Column(column =>
+        {
+            column.Item().Text("BENEFIT BALANCE")
+                .FontSize(11)
+                .SemiBold()
+                .FontColor(Colors.Blue.Darken2);
+
+            column.Item().Table(table =>
+            {
+                table.ColumnsDefinition(columns =>
+                {
+                    columns.RelativeColumn();
+                    columns.ConstantColumn(80);
+                });
+
+                table.Header(header =>
+                {
+                    header.Cell().Element(HeaderStyle).Text("Benefit Type");
+                    header.Cell().Element(HeaderStyle).AlignRight().Text("Balance (BHD)");
+                });
+
+                foreach (var benefit in Model.BenefitBalance)
+                {
+                    table.Cell().Element(CellStyle).Text(benefit.BenefitType);
+                    table.Cell().Element(CellStyle).AlignRight().Text($"{benefit.BalanceAmount:N3}");
+                }
+            });
         });
     }
 
@@ -347,30 +385,30 @@ public class EmployeePayslipDocument : IDocument
                 .Italic()
                 .FontColor(Colors.Grey.Darken1);
 
-            column.Item().PaddingTop(20).Row(row =>
+            column.Item().PaddingTop(15).Row(row =>
             {
                 row.RelativeItem().Column(col =>
                 {
-                    col.Item().BorderTop(1).BorderColor(Colors.Black).PaddingTop(5)
-                        .Text("Prepared By").FontSize(9).SemiBold();
-                    col.Item().Text(Model.PreparedBy).FontSize(9);
-                    col.Item().Text(Model.Company.CompanyName).FontSize(8);
+                    col.Item().BorderTop(1).BorderColor(Colors.Black).PaddingTop(4)
+                        .Text("Prepared By").FontSize(8).SemiBold();
+                    col.Item().Text(Model.PreparedBy).FontSize(8);
+                    col.Item().Text(Model.Company.CompanyName).FontSize(7);
                 });
 
-                row.ConstantItem(40);
+                row.ConstantItem(30);
 
                 row.RelativeItem().Column(col =>
                 {
                     var seal = ImageHelper.GetCompanySeal();
                     if (seal != null && seal.Length > 0)
                     {
-                        col.Item().Width(60).Height(60).Image(seal, ImageScaling.FitArea);
-                        col.Item().Text("Official Seal").FontSize(8).AlignCenter();
+                        col.Item().Width(50).Height(50).Image(seal, ImageScaling.FitArea);
+                        col.Item().Text("Official Seal").FontSize(7).AlignCenter();
                     }
                     else
                     {
-                        col.Item().BorderTop(1).BorderColor(Colors.Black).PaddingTop(5)
-                            .Text("Company Seal").FontSize(9).SemiBold();
+                        col.Item().BorderTop(1).BorderColor(Colors.Black).PaddingTop(4)
+                            .Text("Company Seal").FontSize(8).SemiBold();
                     }
                 });
             });
@@ -393,29 +431,29 @@ public class EmployeePayslipDocument : IDocument
                 }
 
                 row.RelativeItem().Text(Model.Company.CompanyName)
-                    .FontSize(8)
+                    .FontSize(7)
                     .FontColor(Colors.Grey.Darken1);
             });
 
             column.Item().AlignCenter().Text("This is a confidential document. Keep it secure.")
-                .FontSize(8).Italic().FontColor(Colors.Grey.Darken2);
+                .FontSize(7).Italic().FontColor(Colors.Grey.Darken2);
         });
     }
 
     // Helper methods for consistent styling
     IContainer HeaderStyle(IContainer c) => c
         .Background(Colors.Grey.Darken1)
-        .Padding(5)
-        .DefaultTextStyle(x => x.FontSize(9).SemiBold().FontColor(Colors.White));
+        .Padding(4)
+        .DefaultTextStyle(x => x.FontSize(8).SemiBold().FontColor(Colors.White));
 
     IContainer CellStyle(IContainer c) => c
         .Border(1)
         .BorderColor(Colors.Grey.Lighten2)
-        .Padding(5);
+        .Padding(4);
 
     IContainer TotalStyle(IContainer c) => c
         .Background(Colors.Grey.Lighten3)
         .Border(1)
         .BorderColor(Colors.Grey.Lighten1)
-        .Padding(5);
+        .Padding(4);
 }
