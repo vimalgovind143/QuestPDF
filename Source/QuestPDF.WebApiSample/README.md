@@ -39,6 +39,91 @@ A real-time PDF generation web API built with **ASP.NET Core 8** and **QuestPDF*
 
 ## API Endpoints
 
+### Financial Ledger Reports
+
+### 1. Income Statement
+Professional income statement showing revenue, expenses, and net income for a period.
+
+**GET** `/api/ledger/income-statement/sample` - Generate sample income statement
+**GET** `/api/ledger/income-statement/sample/json` - Get sample data as JSON
+
+**Example:**
+```bash
+curl http://localhost:5100/api/ledger/income-statement/sample --output income-statement.pdf
+```
+
+---
+
+### 2. Financial Position (Balance Sheet)
+Statement of financial position showing assets, liabilities, and equity at a point in time.
+
+**GET** `/api/ledger/financial-position/sample` - Generate sample financial position
+**GET** `/api/ledger/financial-position/sample/json` - Get sample data as JSON
+
+**Example:**
+```bash
+curl http://localhost:5100/api/ledger/financial-position/sample --output financial-position.pdf
+```
+
+---
+
+### 3. Trial Balance
+Complete trial balance listing all ledger accounts with debit and credit balances.
+
+**GET** `/api/ledger/trial-balance/sample` - Generate sample trial balance
+**GET** `/api/ledger/trial-balance/sample/json` - Get sample data as JSON
+
+**Example:**
+```bash
+curl http://localhost:5100/api/ledger/trial-balance/sample --output trial-balance.pdf
+```
+
+---
+
+### 4. 2-Year Comparison Report
+Financial performance comparison across two periods with variance analysis.
+
+**GET** `/api/ledger/comparison/sample` - Generate sample comparison report
+**GET** `/api/ledger/comparison/sample/json` - Get sample data as JSON
+
+**Example:**
+```bash
+curl http://localhost:5100/api/ledger/comparison/sample --output comparison-report.pdf
+```
+
+---
+
+### 5. Budget Comparison Report
+Comparison of actual results against budgeted amounts with variance analysis.
+
+**GET** `/api/ledger/budget-comparison/sample` - Generate sample budget comparison
+**GET** `/api/ledger/budget-comparison/sample/json` - Get sample data as JSON
+
+**Example:**
+```bash
+curl http://localhost:5100/api/ledger/budget-comparison/sample --output budget-comparison.pdf
+```
+
+---
+
+### 6. All Ledger Reports
+Generate all ledger reports at once.
+
+**GET** `/api/ledger/all-reports/sample` - Generate all ledger reports
+
+**Example:**
+```bash
+curl http://localhost:5100/api/ledger/all-reports/sample --output all-ledger-reports.pdf
+```
+
+**Key Features of All Ledger Reports:**
+- Header with company logo and date range
+- Footer with page numbers and printing time
+- Watermark support
+- GCC region compatibility (Bahraini Dinars)
+- Multi-page support with proper pagination
+- Full chart of accounts information
+
 All endpoints support both GET (with sample data) and POST (with custom data) methods, plus JSON data retrieval for testing.
 
 ### Core Business Documents
@@ -246,21 +331,29 @@ The following specialized reports demonstrate the flexibility of the dynamic col
 ```
 QuestPDF.WebApiSample/
 ├── Controllers/
-│   └── PdfController.cs                      # API endpoints for all documents
+│   ├── PdfController.cs                      # API endpoints for all documents
+│   └── LedgerController.cs                   # API endpoints for ledger reports
 ├── Documents/
 │   ├── StandardTaxInvoiceDocument.cs         # TAX invoice template
 │   ├── ReceiptDocument.cs                    # Receipt template (A5)
 │   ├── PurchaseOrderDocument.cs              # Purchase order template
 │   ├── DynamicColumnReportDocument.cs        # Dynamic column report (A4)
 │   ├── ProductCatalogDocument.cs             # Product catalog (A4 Landscape)
-│   └── EmployeeReportDocument.cs             # Employee report (A4 Portrait)
+│   ├── EmployeeReportDocument.cs             # Employee report (A4 Portrait)
+│   ├── LedgerReportDocument.cs               # Base ledger report template
+│   ├── IncomeStatementDocument.cs            # Income statement template
+│   ├── FinancialPositionDocument.cs          # Financial position template
+│   ├── TrialBalanceDocument.cs               # Trial balance template
+│   ├── ComparisonReportDocument.cs           # 2-year comparison template
+│   └── BudgetComparisonDocument.cs           # Budget comparison template
 ├── Models/
 │   ├── StandardTaxInvoiceModel.cs            # TAX invoice data model
 │   ├── ReceiptModel.cs                       # Receipt data model
 │   ├── PurchaseOrderModel.cs                 # Purchase order data model
 │   ├── DynamicColumnReportModel.cs           # Dynamic report data model
 │   ├── ProductCatalogModel.cs                # Product catalog data model
-│   └── EmployeeReportModel.cs                # Employee report data model
+│   ├── EmployeeReportModel.cs                # Employee report data model
+│   └── LedgerReportModel.cs                  # Ledger report data models
 ├── SampleDataGenerator.cs                    # Sample data for all document types
 ├── Program.cs                                # Application entry point
 ├── appsettings.json                          # Configuration
@@ -281,6 +374,11 @@ QuestPDF.WebApiSample/
 | **Project Timeline** | A4 | Portrait | Project milestone tracking |
 | **Product Catalog** | A4 | **Landscape** | Product listings & catalogs |
 | **Employee Report** | A4 | Portrait | HR reports & directories |
+| **Income Statement** | A4 | Portrait | Financial performance reporting |
+| **Financial Position** | A4 | Portrait | Balance sheet reporting |
+| **Trial Balance** | A4 | Portrait | Account balance verification |
+| **Comparison Report** | A4 | Portrait | Period-to-period analysis |
+| **Budget Comparison** | A4 | Portrait | Budget vs actual analysis |
 
 ## Adding Your Company Branding
 
